@@ -1,18 +1,22 @@
-import { ReactElement, useState } from 'react';
-import { APP_COLLAPSE_WIDTH, APP_EXTEND_WIDTH } from "./consts"
+import  { ReactElement, useState } from 'react';
+import { APP_COLLAPSE_WIDTH, APP_EXTEND_WIDTH, URLS } from './consts';
 
-import Button from './Button';
+interface PanelProps {
+  onWidthChange: (value: number) => void;
+  initialEnabled: boolean;
+}
 
-export default function Panel({ onWidthChange, initialEnabled }: { onWidthChange: (value: number) => void, initialEnabled: boolean }): ReactElement {
+export default function Panel({ onWidthChange, initialEnabled }: PanelProps): ReactElement {
   const [enabled, setEnabled] = useState(initialEnabled);
   const [sidePanelWidth, setSidePanelWidth] = useState(enabled ? APP_EXTEND_WIDTH : APP_COLLAPSE_WIDTH);
+  const [tabIndex, setTabIndex] = useState(0);
 
   function handleOnToggle(enabled: boolean) {
     const value = enabled ? APP_EXTEND_WIDTH : APP_COLLAPSE_WIDTH;
     setSidePanelWidth(value);
     onWidthChange(value);
 
-    // Use the Chrome Extensions API
+    // Use Chrome API to save the state
     chrome.storage.local.set({ enabled });
 
     if (enabled) {
@@ -31,32 +35,73 @@ export default function Panel({ onWidthChange, initialEnabled }: { onWidthChange
       style={{
         width: sidePanelWidth - 5,
         boxShadow: '0px 0px 5px #0000009e',
+        transition: 'width 0.3s ease-in-out',
       }}
-      className="absolute top-0 right-0 bottom-0 z-max bg-[#F5F8FA] ease-in-out duration-300 overflow-hidden"
+      className="absolute top-0 right-0 bottom-0 z-max bg-gray-100 overflow-hidden"
     >
-      <div className="absolute bottom-0 left-0 w-[50px] z-10 flex justify-center items-center p-1">
-        <Button active={enabled} onClick={() => openPanel()}>
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
+      {/* IFrame for the selected URL */}
+      <iframe
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          opacity: enabled ? 1 : 0,
+          zIndex: enabled ? 1 : -1,
+          transition: 'opacity 0.3s ease-in-out',
+        }}
+        title={URLS[tabIndex].name}
+        src={URLS[tabIndex].url}
+      />
+      {/* Tab Navigation */}
+      <div
+        style={{
+          display: enabled ? 'none' : 'flex',
+          flexDirection: 'column',
+          width: '50px',
+          padding: '5px',
+          gap: '10px',
+        }}
+      >
+        {URLS.map(({ name, image }, _index) => {
+          function onMenuClick(index: number) {
+            setTabIndex(index);
+            openPanel(true);
+          }
+          return (
+            <button
+              key={name}
+              onClick={() => onMenuClick(_index)}
+              style={{
+                backgroundColor: _index === tabIndex ? '#ddd' : '#fff',
+                padding: '10px',
+                borderRadius: '5px',
+                cursor: 'pointer',
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d={
-                  enabled
-                    ? 'M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25'
-                    : 'M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15'
-                }
-              />
-            </svg>
-          </span>
-        </Button>
+              <img src={image} alt={name} style={{ width: '100%' }} />
+            </button>
+          );
+        })}
+      </div>
+      {/* Toggle Button */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10px',
+          left: '10px',
+        }}
+      >
+        <button
+          onClick={() => openPanel()}
+          style={{
+            padding: '10px',
+            borderRadius: '5px',
+            backgroundColor: enabled ? '#ddd' : '#fff',
+            cursor: 'pointer',
+          }}
+        >
+          {enabled ? 'Close' : 'Open'}
+        </button>
       </div>
     </div>
   );
