@@ -1,4 +1,24 @@
 const Panel = () => {
+
+  function sendQueryData() {
+    fetch('http://localhost:5000/api/query', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: 'SELECT * FROM users',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
   return (
     <div
       style={{
@@ -11,7 +31,7 @@ const Panel = () => {
       <input style={{
         
         position: 'absolute',
-        // make it a little higher than the bottom
+        
 
         bottom: '50px',
         width: '100%',
@@ -20,6 +40,21 @@ const Panel = () => {
         backgroundColor: 'white',
 
       }}/>  
+
+      <button 
+      
+      style={{
+        position: 'absolute',
+        
+        bottom: '200px',
+        
+        
+        width: '100%',
+        padding: '5px',
+        border: '10px solid #0000009e',
+        backgroundColor: 'white',
+      }}
+      />
     </div>
   );
 };
