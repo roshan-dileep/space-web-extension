@@ -1,23 +1,9 @@
-
 import { createRoot } from 'react-dom/client';
 import Panel from './Components/Panel';
 import { APP_COLLAPSE_WIDTH, APP_EXTEND_WIDTH } from './Components/consts';
 
-async function loadChromeStorage() {
-  let initialEnabled = true;
-  try {
-    // Load the "enabled" state from Chrome's local storage
-    const result = await chrome.storage.local.get(['enabled']);
-    initialEnabled = !!result.enabled;
-  } catch (error) {
-    console.error('Failed to load Chrome storage:', error);
-    initialEnabled = true;
-  }
-  return initialEnabled;
-}
-
-async function init() {
-  const initialEnabled = await loadChromeStorage();
+function init() {
+  const initialEnabled = true; // Default value without storage
 
   // Create a container for the extension UI
   const app = document.createElement('div');
