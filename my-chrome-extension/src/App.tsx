@@ -2,7 +2,7 @@
 import Panel from "./Components/Panel";
 
 const App: React.FC = () => {
-  return <Panel onWidthChange={() => {}} initialEnabled={true} />;
+  return <Panel />;
 };
 
 export default App;
