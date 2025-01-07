@@ -19,6 +19,7 @@ const Panel = () => {
       });
 
   }
+  sendQueryData();
   return (
     <div
       style={{
