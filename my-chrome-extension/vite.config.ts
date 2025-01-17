@@ -8,4 +8,12 @@ export default defineConfig({
     react(),
     crx({ manifest }),
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html', // Ensure your main entry point is included
+        sidepanel: 'sidepanel.html', // Add the sidepanel.html as an entry point
+      },
+    },
+  },
 })
