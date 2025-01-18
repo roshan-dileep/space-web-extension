@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import '../index.css'; // Importing global CSS
 import './Panel.css'; // Importing Panel-specific CSS
+import { Input } from './ui/input'; // Adjusting the import path
 
 const Panel = () => {
   const [query, setQuery] = useState('');
@@ -18,7 +19,7 @@ const Panel = () => {
 
   return (
     <div className="panel">
-      <input
+      <Input
         className="input"
         type="text"
         placeholder="Enter your query here"
