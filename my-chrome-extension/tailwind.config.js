@@ -1,16 +1,26 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-    darkMode: ["class"],
-    content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+  ],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {}
-  	}
+    extend: {
+      fontFamily: {
+        arial: ['Arial', 'sans-serif'],
+      },
+      keyframes: {
+        typewriter: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
+        blink: {
+          '0%, 100%': { borderColor: 'transparent' },
+          '50%': { borderColor: 'white' },
+        },
+      },
+      animation: {
+        typewriter: 'typewriter 4s steps(40) 1s 1 normal both, blink 1s step-end infinite',
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }

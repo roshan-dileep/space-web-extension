@@ -29,7 +29,22 @@ const Panel = () => {
   };
 
   return (
-    <div className="bg-black w-screen h-screen flex flex-col items-center justify-end pb-20">
+    <div className="bg-black w-screen h-screen flex flex-col items-center justify-end pb-20 font-arial">
+      {response && (
+        <div className="result mt-4 text-white w-full px-4 mb-10">
+          <pre className="relative w-[max-content] font-mono before:absolute before:inset-0 before:bg-black before:animate-typewriter whitespace-pre-wrap break-words">
+            {response}
+          </pre>
+          <DropdownMenu>
+            <DropdownMenuTrigger> &gt; Sources</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>0.9</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>{sources}</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
       <div className="flex items-center w-full justify-center mb-20">
         <Input
           className="input w-7/10 md:w-96"
@@ -42,19 +57,6 @@ const Panel = () => {
           Search
         </button>
       </div>
-      {response && (
-        <div className="result mt-4 text-white w-full px-4 mb-10">
-          <pre className="whitespace-pre-wrap break-words">{response}</pre>
-          <DropdownMenu>
-            <DropdownMenuTrigger>Sources</DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>0.9</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>{sources}</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
     </div>
   );
 };
